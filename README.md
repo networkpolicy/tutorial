@@ -43,13 +43,13 @@ installed, then skip the following steps.
 
 ### Darwin
 
-    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.2/cilium-darwin-amd64.tar.gz
+    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.4/cilium-darwin-amd64.tar.gz
     tar xzvf cilium-darwin-amd64.tar.gz
     sudo mv cilium /usr/local/bin
 
 ### Linux
 
-    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.2/cilium-linux-amd64.tar.gz
+    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.4/cilium-linux-amd64.tar.gz
     tar xzvf cilium-linux-amd64.tar.gz
     sudo mv cilium /usr/local/bin
 
