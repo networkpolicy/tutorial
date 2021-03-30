@@ -34,30 +34,15 @@ with a
 [CNI](https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/)
 that is capable of enforcing NetworkPolicies. Multiple options exist, for this
 tutorial we will be using [Cilium](https://github.com/cilium/cilium) as it
-provides nice visibility tooling to help us illustrate what is going on.
+provides nice visibility tooling to help us illustrate things as we go along.
 
 If you already have a Kubernets cluster with an appropriate CNI plugin
 installed, then skip the following steps.
-
-## Install Cilium CLI
-
-### Darwin
-
-    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.4/cilium-darwin-amd64.tar.gz
-    tar xzvf cilium-darwin-amd64.tar.gz
-    sudo mv cilium /usr/local/bin
-
-### Linux
-
-    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.4/cilium-linux-amd64.tar.gz
-    tar xzvf cilium-linux-amd64.tar.gz
-    sudo mv cilium /usr/local/bin
 
 ## Create a Cluster
 
 ### GKE
 
-    export GKE_PROJECT=gke-clusters
     export CLUSTER_NAME=test-$(whoami)-$RANDOM
     export CLUSTER_ZONE=us-west2-a
     gcloud container clusters create $CLUSTER_NAME --image-type COS --num-nodes 2 --machine-type n1-standard-4 --zone $CLUSTER_ZONE
@@ -69,26 +54,44 @@ installed, then skip the following steps.
 
 ## Install Cilium
 
-Install Cilium into the cluster:
+**Note:** You can install and use any CNI that supports NetworkPolicy to complete this tutorial. Skip this section if already have a CNI installed with NetworkPolicy.
 
+### Darwin
+
+    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.4/cilium-darwin-amd64.tar.gz
+    tar xzvf cilium-darwin-amd64.tar.gz
+    sudo mv cilium /usr/local/bin
     cilium install
     cilium status
 
-## Enable Hubble
+### Linux
 
-Enable the Hubble visibility layer so we can observe what is going on while we explore NetworkPolicies
+    curl -LO https://github.com/cilium/cilium-cli/releases/download/v0.4/cilium-linux-amd64.tar.gz
+    tar xzvf cilium-linux-amd64.tar.gz
+    sudo mv cilium /usr/local/bin
+    cilium install
+    cilium status
 
-    cilium hubble enable
 
-In order to access the visibility API, perform a port forward with `kubectl`.
-You can obviously also expose a `LoadBalancer` service if you want but for the
-simplicity of this tutorial, a `port-forward` is the simplest solution:
+## Enable Hubble (Optional)
 
-    kubectl port-forward -n kube-system deployment/hubble-relay 4245:4245&
+If you want, you can enable Hubble to get a fully distributed network monitor
+that will show you every forwarding and drop decision in your cluster.
 
-Then start `hubble observe` and start observing the default namespace:
+1. [Install Hubble](https://github.com/cilium/hubble/releases)
+2. Enable Hubble in Cilium:
 
-    hubble observe --server localhost:4245 -f -n default
+        cilium hubble enable
+
+3. Add a port forward with `kubectl` to expose Hubble. You can obviously also
+   expose a `LoadBalancer` service if you want but for the simplicity of this
+   tutorial, a `port-forward` is the simplest solution:
+
+        kubectl port-forward -n kube-system deployment/hubble-relay 4245:4245&
+
+4. Run `hubble observe` to start observing all network traffic in the default namespace:
+
+        hubble observe --server localhost:4245 -f -n default
 
 # Fundamentals
 
