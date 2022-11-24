@@ -192,7 +192,7 @@ HTTP/1.1 200 OK
 ```
 
 ## Putting a Pod into ingress default deny mode
-The following policy ([01-backend-ingress-deny.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/01-backend-ingress-deny.yaml)) will put the `backend` pod into **default deny** mode for the ingress direction. The pod will no longer be able to receive any traffic until we allow it but it can still egress all traffic.
+The following policy ([01-backend-ingress-deny.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/01-backend-ingress-deny.yaml)) will put the `backend` pod into **default deny** mode for the ingress direction. The pod will no longer be able to receive any traffic until we allow it but it can still egress all traffic.
 
 ``` yaml
 kind: NetworkPolicy
@@ -280,7 +280,7 @@ Stateful enforcement enables allowing a network connection in the forward direct
 
 ![](images/pod_to_pod_ingress.png)
 
-Next, with the `backend` pod in ingress **default deny**, we will specifically allow the `frontend` pod to reach the `backend` ([02-backend-ingress-allow-frontend.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/02-backend-ingress-allow-frontend.yaml)):
+Next, with the `backend` pod in ingress **default deny**, we will specifically allow the `frontend` pod to reach the `backend` ([02-backend-ingress-allow-frontend.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/02-backend-ingress-allow-frontend.yaml)):
 
 ``` yaml
 kind: NetworkPolicy
@@ -332,7 +332,7 @@ This highlights another key aspect of NetworkPolicy: Policies are additive. If y
 ## Allowing Everything in a Namespace
 
 While it is clearly desirable to define all allowed network communication on a per pod level to achieve least-privilege security, doing so might be quite involved in your environment. Allowing everything within namespaces while denying cross namespace and external access can be a simple first step while already improving your security posture overall
-([03-all-pods-allow-within-namespace.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/03-all-pods-allow-within-namespace.yaml)):
+([03-all-pods-allow-within-namespace.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/03-all-pods-allow-within-namespace.yaml)):
 
 ```yaml
 apiVersion: networking.k8s.io/v1
@@ -390,7 +390,7 @@ This is not surprising as we also still have the policy `backend-ingress-allow-f
 ![](images/pod_to_pod_across_namespaces.png)
 
 If an empty `podSelector` matches everything in a namespace, how can we allow network communication across namespaces? This is where the `namespaceSelector` comes in
-([04-backend-ingress-allow-monitoring-namespace.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/04-backend-ingress-allow-monitoring-namespace.yaml)):
+([04-backend-ingress-allow-monitoring-namespace.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/04-backend-ingress-allow-monitoring-namespace.yaml)):
 
 ``` yaml
 apiVersion: networking.k8s.io/v1
@@ -449,7 +449,7 @@ HTTP/1.1 200 OK
 ![](images/pod_to_pod_across_namespaces_combined.png)
 
 To improve the security posture further, the `namespaceSelector` can be combined with a `podSelector` to only allow certain pods from the namespace
-([05-backend-ingress-allow-monitoring-app.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/05-backend-ingress-allow-monitoring-app.yaml)):
+([05-backend-ingress-allow-monitoring-app.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/05-backend-ingress-allow-monitoring-app.yaml)):
 
 ``` yaml
 apiVersion: networking.k8s.io/v1
@@ -484,7 +484,7 @@ HTTP/1.1 200 OK
 ## Putting a Pod into egress default deny mode
 
 Following the example on how to put ingress into **default deny**, the same technique can be applied to egress as well but this time, we select the `frontend` pod
-([06-frontend-egress-deny.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/06-frontend-egress-deny.yaml)):
+([06-frontend-egress-deny.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/06-frontend-egress-deny.yaml)):
 
 ```yaml
 kind: NetworkPolicy
@@ -516,7 +516,7 @@ This is despite having an ingress policy loaded which allows the `backend` pod t
 ![](images/pod_to_pod_egress.png)
 
 Allowing pod to pod in the egress direction works exactly the same as for ingress
-([07-frontend-egress-allow-to-backend.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/07-frontend-egress-allow-to-backend.yaml)):
+([07-frontend-egress-allow-to-backend.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/07-frontend-egress-allow-to-backend.yaml)):
 
 ```yaml
 kind: NetworkPolicy
@@ -569,7 +569,7 @@ DNS. It's *always* DNS. We will fix it in the next section. For now, confirm tha
 ![](images/pod_to_pod_egress_coredns.png)
 
 Allowing DNS is something that you typically want to do for all pods running in a namespace. In future parts of this tutorial, we will introduce cluster-wide network policies that will even allow you do this at cluster scale. For now, we look at how to allow DNS for all pods in a single namespace:
-([08-all-pods-egress-allow-dns.yaml](https://editor.cilium.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/08-all-pods-egress-allow-dns.yaml)):
+([08-all-pods-egress-allow-dns.yaml](https://app.networkpolicy.io/?policy-url=https://raw.githubusercontent.com/cilium/network-policy-tutorial/master/tutorial/08-all-pods-egress-allow-dns.yaml)):
 
 
 ```yaml
